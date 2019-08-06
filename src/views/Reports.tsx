@@ -3,16 +3,18 @@ import { connect } from 'react-redux';
 import { db } from 'services/firebase';
 import { createStyles, withStyles, WithStyles, Theme } from '@material-ui/core';
 import { ReduxState } from 'services/types';
-import { RemoteData, InStoreApi, ShopApi } from 'common/types';
+import { RemoteData, InStoreApi, ShopApi, DateRange } from 'common/types';
 import Container from 'components/Container';
 import Typography from '@material-ui/core/Typography';
+import DateRangePicker from 'components/DateRangePicker';
 
 interface State {
-    rentals: RemoteData<InStoreApi[]>,
+    rentals: RemoteData<InStoreApi[]>;
 }
 
 interface StateToProps {
-    shop: ShopApi,
+    shop: ShopApi;
+    range: DateRange;
 }
 
 type Props = StateToProps & WithStyles<typeof styles>;
@@ -30,11 +32,18 @@ class Reports extends React.Component<Props, State> {
         this.getRentals();
     }
 
+    componentDidUpdate() {
+        this.getRentals();
+    }
+
     getRentals() {
         const shopId = this.props.shop.id;
+        const { from, to } = this.props.range;
         const rentalsRef = db.collection('rentals')
             .where('shopId', '==', shopId)
             .where('rentalState', '==', 'COMPLETED')
+            .where('endDate', '>=', from.toISOString())
+            .where('endDate', '<=', to.toISOString())
             .orderBy('endDate', 'asc');
         rentalsRef.get().then((querySnapshot) => {
             const rentalList: InStoreApi[] = [];
@@ -46,6 +55,8 @@ class Reports extends React.Component<Props, State> {
             this.setState({
                 rentals
             });
+            console.log(rentalList);
+            
         }, (error) => {
             const rentals: RemoteData<InStoreApi[]> = { kind: 'ERROR', error: error.message };
             this.setState({
@@ -104,15 +115,16 @@ class Reports extends React.Component<Props, State> {
                 <Typography variant="h5" gutterBottom className={classes.header}>
                     Dummy report
                 </Typography>
+                <DateRangePicker />
                 {this.renderRentals()}
             </Container>
         );
     }
 }
 
-const mapStateToProps = ({ shops}: ReduxState): StateToProps => {
+const mapStateToProps = ({ shops, range }: ReduxState): StateToProps => {
     const { activeShop } = shops;
-    return { shop: activeShop! };
+    return { shop: activeShop!, range };
 };
 
 const styles = (theme: Theme) => createStyles({
