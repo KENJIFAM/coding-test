@@ -6,7 +6,7 @@ export default createStyles({
         boxSizing: 'border-box',
         height: '100%',
         width: '100%',
-        fontSize: '62.5%'
+        fontSize: '100%'
       },
       
       '*, *:before, *:after': {

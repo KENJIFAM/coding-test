@@ -179,3 +179,7 @@ export type RentalState = 'INIT' | 'BOOKED' | 'ACTIVE' | 'COMPLETED';
 
 export type ActiveState = 'RENT_INIT' | 'PAYLINK_SENT' | 'PAYLINK_OPEN' | 'PAYLINK_PAID' | 'STORE_BOOKED' | 'STORE_PAID' | 'ONLINE_PAID' | 'RENT_OUT' | 'RENT_RETURNED' | /* keep for now*/ 'RENT_CHECKED' | 'RENT_ENDED' | 'RENT_CANCEL';
 
+export interface DateRange {
+    from: Date,
+    to: Date
+}

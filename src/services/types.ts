@@ -1,4 +1,4 @@
-import { ShopApi, UserApi, Languages, RemoteData } from 'common/types';
+import { ShopApi, UserApi, Languages, RemoteData, DateRange } from 'common/types';
 
 export interface ReduxState {
     auth: AuthState,
@@ -6,6 +6,7 @@ export interface ReduxState {
     shops: ShopState,
     lang: Languages,
     view: ViewState,
+    range: DateRange
 }
 
 export type AuthState = LoginStatus<AuthInfo>;

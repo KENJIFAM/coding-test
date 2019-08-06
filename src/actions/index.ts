@@ -1,6 +1,7 @@
 export * from './UserActions';
 export * from './ViewActions';
 export * from './ShopActions';
+export * from './ReportActions';
 import { ReduxState } from 'services/types';
 import { auth } from 'services/firebase';
 

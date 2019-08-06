@@ -4,6 +4,7 @@ import UserReducer from './UserReducer';
 import LangReducer from './LangReducer';
 import ViewReducer from './ViewReducer';
 import ShopReducer from './ShopReducer';
+import RangeReducer from './RangeReducer';
 
 const appReducer = combineReducers({
     auth: AuthReducer,
@@ -11,6 +12,7 @@ const appReducer = combineReducers({
     shops: ShopReducer,
     lang: LangReducer,
     view: ViewReducer,
+    range: RangeReducer,
 });
 
 const rootReducer = (state: any, action: any) => {
