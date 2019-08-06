@@ -32,8 +32,10 @@ class Reports extends React.Component<Props, State> {
         this.getRentals();
     }
 
-    componentDidUpdate() {
-        this.getRentals();
+    componentDidUpdate(prevProps: Props, prevState: State) {
+        if (JSON.stringify(prevProps.range) !== JSON.stringify(this.props.range)) {
+            this.getRentals();
+        }
     }
 
     getRentals() {
