@@ -7,6 +7,7 @@ import { RemoteData, InStoreApi, ShopApi, DateRange } from 'common/types';
 import Container from 'components/Container';
 import Typography from '@material-ui/core/Typography';
 import DateRangePicker from 'components/DateRangePicker';
+import RentalTable from 'components/RentalTable';
 
 interface State {
     rentals: RemoteData<InStoreApi[]>;
@@ -56,9 +57,7 @@ class Reports extends React.Component<Props, State> {
             const rentals: RemoteData<InStoreApi[]> = { kind: 'FETCHED', data: rentalList };
             this.setState({
                 rentals
-            });
-            console.log(rentalList);
-            
+            });            
         }, (error) => {
             const rentals: RemoteData<InStoreApi[]> = { kind: 'ERROR', error: error.message };
             this.setState({
@@ -68,7 +67,6 @@ class Reports extends React.Component<Props, State> {
     }
 
     renderRentals() {
-        const classes = this.props.classes;
         const rentals = this.state.rentals;
         if (rentals.kind === 'LOADING') {
             return <div>Loading</div>;
@@ -79,34 +77,8 @@ class Reports extends React.Component<Props, State> {
         
         const rentalData = rentals.data;
 
-        const rentalDataRows = rentalData.map((rental) => {
-            const responsiblePerson = rental.responsiblePerson;
-            const name = responsiblePerson.firstName + ' ' + responsiblePerson.lastName;
-            const date = rental.endDate;
-            const price = rental.charge.amount;
-            const priceString = (price / 100).toFixed(2);
-            return (
-                <tr key={rental.id}>
-                    <td>{name}</td>
-                    <td>{date}</td>
-                    <td>{priceString}</td>
-                </tr>
-            );
-        });
-
         return (
-            <table>
-                <thead className={classes.leftAlign}>
-                    <tr>
-                        <th>Name</th>
-                        <th>Date</th>
-                        <th>Amount</th>
-                    </tr>
-                </thead>
-            <tbody>
-                {rentalDataRows}
-            </tbody>
-            </table>
+            <RentalTable rentals={rentalData}/>
         );
     }
 
@@ -117,7 +89,14 @@ class Reports extends React.Component<Props, State> {
                 <Typography variant="h5" gutterBottom className={classes.header}>
                     Dummy report
                 </Typography>
-                <DateRangePicker />
+                <div className={classes.filter}>
+                    <span className={classes.label}>
+                        Chose time
+                    </span>
+                    <span className={classes.picker}>
+                        <DateRangePicker />
+                    </span>
+                </div>
                 {this.renderRentals()}
             </Container>
         );
@@ -131,10 +110,21 @@ const mapStateToProps = ({ shops, range }: ReduxState): StateToProps => {
 
 const styles = (theme: Theme) => createStyles({
     header: {
-        marginBottom: 32,
+        marginBottom: 10,
     },
     leftAlign: {
         textAlign: 'left',
+    },
+    filter: {
+        textAlign: 'right',
+    },
+    label: {
+        display: 'inline-block',
+        fontSize: 18,
+        marginRight: 20,
+    },
+    picker: {
+        display: 'inline-block',
     },
 });
 

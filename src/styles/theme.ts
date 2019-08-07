@@ -166,7 +166,7 @@ export const theme = createMuiTheme({
       fontWeight: 600,
     },
     caption: { // CAPTION
-      fontSize: '1.196rem',
+      fontSize: '1rem',
       fontWeight: 400,
     },
     button: { // BUTTON

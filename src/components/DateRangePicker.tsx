@@ -54,14 +54,15 @@ class DateRangePicker extends React.Component<Props, State> {
     this.setState({ from });
   }
 
-  handleToChange = (to: Date) => {
+  handleToChange = async(to: Date) => {
     this.setState({ to });
-    this.props.updateDateRange(this.state);
+    const { from } = this.state;
+    await this.props.updateDateRange({ from, to });
     this.showFromMonth();
   }
 
   render() {
-    const { from, to } = this.props.range;
+    const { from, to } = this.state;
     const modifiers = { start: from, end: to };
     return (
       <div className="InputFromTo">
